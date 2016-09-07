@@ -12,29 +12,32 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
     var socket = io();
 
     // Chat name
-    $scope.chatName = '';
+    $scope.username = '';
 
     // Typed message
     $scope.message = '';
 
-    var chatName = 'Enter Chat Name...';
+    var chatName = 'Enter User Name...';
     var typeMessage = 'Type Message...';
 
-    $scope.hasChatName = false;
+    $scope.hasUserName = false;
     $scope.placeholder = chatName;
 
     // On submit
     $scope.submit = function() {
 
         // if first time, enter chatName
-        if (!$scope.hasChatName) {
-            $scope.hasChatName = true;
-            $scope.chatName = $scope.message;
+        if (!$scope.hasUserName) {
+            $scope.hasUserName = true;
+            $scope.username = $scope.message;
             $scope.placeholder = typeMessage;
-            socket.emit('connected', $scope.chatName);
+            socket.emit('connected', $scope.username);
         }
-        else if ($scope.hasChatName) {
-            socket.emit('chat message', $scope.message);
+        else if ($scope.hasUserName) {
+            socket.emit('chat message', {
+                username: $scope.username,
+                message: $scope.message
+            });
         }
 
         $scope.message = '';
