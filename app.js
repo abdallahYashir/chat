@@ -31,6 +31,7 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
             $scope.hasChatName = true;
             $scope.chatName = $scope.message;
             $scope.placeholder = typeMessage;
+            socket.emit('connected', $scope.chatName);
         }
         else if ($scope.hasChatName) {
             socket.emit('chat message', $scope.message);

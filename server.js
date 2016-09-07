@@ -9,18 +9,28 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+var username = '';
+
 // On IO Connection
 io.on('connection', function(socket) {
 
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
+    // User connection
+    socket.on('connected', function(msg) {
+        io.emit('chat message', msg + ' is connected');
+        username = msg;
     });
 
+    // User disconnection
+    socket.on('disconnect', function(){
+        io.emit('chat message', username + ' is disconnected');
+    });
+
+    // Chat message
     socket.on('chat message', function(msg) {
         io.emit('chat message', msg);
     });
 
-});
+}); // end IO Connection
 
 // Server listening on port
 http.listen(3000, function() {
