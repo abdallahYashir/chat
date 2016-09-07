@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="socketChat">
+<html lang="en" ng-app="socketChat" ng-cloak>
 <head>
     <meta charset="UTF-8">
     <title>Socket.IO chat</title>
@@ -8,12 +8,14 @@
 <body ng-controller="socketCtrl">
     
     <ul id="messages"></ul>
-    <form action="">
-        <input id="m" autocomplete="off"><button>Send</button>
+    <form>
+        <input id="m" autocomplete="off" ng-model="message">
+        <button ng-click="submit();">Send</button>
     </form>
+    
 
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="app.js"></script>
 </body>
