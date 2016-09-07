@@ -9,7 +9,7 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-var username = 'unknown_user';
+var username = '';
 
 // On IO Connection
 io.on('connection', function(socket) {
@@ -22,12 +22,15 @@ io.on('connection', function(socket) {
 
     // User disconnection
     socket.on('disconnect', function(){
-        io.emit('chat message', username + ' has disconnected');
+        if (username !== '') {
+            io.emit('chat message', username + ' has disconnected');
+            username = '';
+        }
     });
 
     // Chat message
     socket.on('chat message', function(msg) {
-        io.emit('chat message', username + ': ' + msg);
+        io.emit('chat message', msg.username + ': ' + msg.message);
     });
 
 }); // end IO Connection
