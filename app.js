@@ -17,8 +17,8 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
     // Typed message
     $scope.message = '';
 
-    const chatName = 'Enter Chat Name...';
-    const typeMessage = 'Type Message...';
+    var chatName = 'Enter Chat Name...';
+    var typeMessage = 'Type Message...';
 
     $scope.hasChatName = false;
     $scope.placeholder = chatName;
