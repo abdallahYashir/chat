@@ -1,0 +1,22 @@
+{
+  "name": "socket-chat-example",
+  "description": "my first socket.io app",
+  "main": "index.html",
+  "authors": [
+    "Abdallah Yashir <abdallah.yashir@chb-technologies.ch>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.5.8"
+  }
+}
