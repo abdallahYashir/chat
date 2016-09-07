@@ -11,12 +11,31 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
     // Declare socket io
     var socket = io();
 
+    // Chat name
+    $scope.chatName = '';
+
     // Typed message
     $scope.message = '';
 
+    const chatName = 'Enter Chat Name...';
+    const typeMessage = 'Type Message...';
+
+    $scope.hasChatName = false;
+    $scope.placeholder = chatName;
+
     // On submit
     $scope.submit = function() {
-        socket.emit('chat message', $scope.message);
+
+        // if first time, enter chatName
+        if (!$scope.hasChatName) {
+            $scope.hasChatName = true;
+            $scope.chatName = $scope.message;
+            $scope.placeholder = typeMessage;
+        }
+        else if ($scope.hasChatName) {
+            socket.emit('chat message', $scope.message);
+        }
+
         $scope.message = '';
         return false;
     };
