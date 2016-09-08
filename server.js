@@ -13,6 +13,7 @@ app.get('/', function(req, res) {
 var username = '';
 var clients = [];
 var messages = [];
+var clientUsernameMap = new Map(); // socket.id, username
 
 var localStorage = new LocalStorage('chat');
 
@@ -26,16 +27,21 @@ io.on('connection', function(socket) {
     socket.on('connected', function(msg) {
         io.emit('chat message', msg + ' has connected');
         username = msg;
+        if (msg !== '') {
+            addNewClientUsername(socket.id, msg);
+        }
     });
 
     // User disconnection
     socket.on('disconnect', function(msg){
-        if (msg.username === undefined) {
-            io.emit('chat message', username + ' has disconnected');
+
+        // compared with socket.id
+        var _userName = getUsernameBySocketId(socket.id);
+        if (_userName !== undefined || _userName !== null) {
+            io.emit('chat message', _userName + ' has disconnected');
+            removeClientUsername(socket.id);
         }
-        else{
-            io.emit('chat message', msg.username + ' has disconnected');
-        }
+
         username = '';
 
         // Remove client
@@ -72,3 +78,18 @@ function removeClient(clients, socket) {
 function updateStorage(key, messages) {
     localStorage.setItem(key, JSON.stringify(messages));
 } // end updateStorage
+
+// Add new client username
+function addNewClientUsername(id, username) {
+    clientUsernameMap.set(id, username);
+} // end addNewClientUsername
+
+// Get username 
+function getUsernameBySocketId(socketId) {
+    return clientUsernameMap.get(socketId);
+} // end getUsernameBySocketId
+
+// Remove client username
+function removeClientUsername(socketId) {
+    clientUsernameMap.delete(socketId);
+}
