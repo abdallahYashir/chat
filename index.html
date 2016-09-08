@@ -9,7 +9,7 @@
     
     <h4>Welcome: {{ username }}</h4>
 
-    <ul id="messages"></ul>
+    <ul id="messages" ng-show="hasUserName"></ul>
     <form>
         <input id="m" autocomplete="off" ng-model="message" placeholder="{{ placeholder }}">
         <button ng-click="submit();">Send</button>

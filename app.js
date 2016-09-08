@@ -55,4 +55,14 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
         socket.emit('disconnect', {username: $scope.username});
     };
 
+    // Received all previous messages in the group chat
+    socket.on('messages', function(msg) {
+        // if message is not empty and user has entered user name
+        if (msg.length > 0) {
+            msg.forEach(function(message) {
+                $('#messages').append($('<li>').text(message));
+            });
+        }
+    }); // en socket.on messages
+
 }]);

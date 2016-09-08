@@ -10,9 +10,14 @@ app.get('/', function(req, res) {
 });
 
 var username = '';
+var clients = [];
+var messages = [];
 
 // On IO Connection
 io.on('connection', function(socket) {
+
+    // Keep track of client socket
+    clients.push(socket);
 
     // User connection
     socket.on('connected', function(msg) {
@@ -30,12 +35,19 @@ io.on('connection', function(socket) {
         }
         username = '';
 
+        // Remove client
+        removeClient(clients, socket);
     });
 
     // Chat message
     socket.on('chat message', function(msg) {
-        io.emit('chat message', msg.username + ': ' + msg.message);
+        var message = msg.username + ': ' + msg.message;
+        io.emit('chat message', message);
+        messages.push(message);
     });
+
+    // Send message only to the newly connected client
+    socket.emit('messages', messages);
 
 }); // end IO Connection
 
@@ -43,3 +55,11 @@ io.on('connection', function(socket) {
 http.listen(3000, function() {
     console.log('listening on *:3000');
 });
+
+// Function to remove socket from list
+function removeClient(clients, socket) {
+    var index = clients.indexOf(socket);
+    if (index != -1) {
+        clients.splice(index, 1);
+    }
+} // end removeClient
