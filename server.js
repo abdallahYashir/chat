@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var LocalStorage = require('node-localstorage').LocalStorage;
 
 app.use(express.static(__dirname));
 
@@ -12,6 +13,8 @@ app.get('/', function(req, res) {
 var username = '';
 var clients = [];
 var messages = [];
+
+var localStorage = new LocalStorage('chat');
 
 // On IO Connection
 io.on('connection', function(socket) {
@@ -44,10 +47,11 @@ io.on('connection', function(socket) {
         var message = msg.username + ': ' + msg.message;
         io.emit('chat message', message);
         messages.push(message);
+        updateStorage('messages', messages);
     });
 
     // Send message only to the newly connected client
-    socket.emit('messages', messages);
+    socket.emit('messages', localStorage.getItem('messages'));
 
 }); // end IO Connection
 
@@ -63,3 +67,8 @@ function removeClient(clients, socket) {
         clients.splice(index, 1);
     }
 } // end removeClient
+
+// Update local storage
+function updateStorage(key, messages) {
+    localStorage.setItem(key, JSON.stringify(messages));
+} // end updateStorage

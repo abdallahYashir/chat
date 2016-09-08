@@ -58,10 +58,16 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
     // Received all previous messages in the group chat
     socket.on('messages', function(msg) {
         // if message is not empty and user has entered user name
-        if (msg.length > 0) {
-            msg.forEach(function(message) {
-                $('#messages').append($('<li>').text(message));
-            });
+        if (msg !== null && msg !== '') {
+            
+            // Parse string to array
+            msg = JSON.parse(msg);
+
+            if (msg.length > 0) {
+                msg.forEach(function(message) {
+                    $('#messages').append($('<li>').text(message));
+                });
+            }
         }
     }); // en socket.on messages
 
