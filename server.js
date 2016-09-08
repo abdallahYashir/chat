@@ -21,11 +21,15 @@ io.on('connection', function(socket) {
     });
 
     // User disconnection
-    socket.on('disconnect', function(){
-        if (username !== '') {
+    socket.on('disconnect', function(msg){
+        if (msg.username === undefined) {
             io.emit('chat message', username + ' has disconnected');
-            username = '';
         }
+        else{
+            io.emit('chat message', msg.username + ' has disconnected');
+        }
+        username = '';
+
     });
 
     // Chat message

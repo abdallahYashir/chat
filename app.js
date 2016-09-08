@@ -50,4 +50,9 @@ angular.module('socketChat').controller('socketCtrl', ['$scope', function($scope
         $('#messages').append($('<li>').text(msg));
     });
 
+    // Detect when tab/window is going to close
+    window.onbeforeunload = function() {
+        socket.emit('disconnect', {username: $scope.username});
+    };
+
 }]);
