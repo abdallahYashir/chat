@@ -56,6 +56,15 @@ io.on('connection', function(socket) {
         updateStorage('messages', messages);
     });
 
+    // Show User Typing
+    socket.on('typing', function(msg) {
+        io.emit('is typing', msg.username);
+    });
+
+    socket.on('typingStop', function(msg) {
+        io.emit('stop typing', msg.username);
+    });
+
     // Send message only to the newly connected client
     socket.emit('messages', localStorage.getItem('messages'));
 

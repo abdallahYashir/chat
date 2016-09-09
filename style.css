@@ -43,3 +43,8 @@ form button {
 #messages li:nth-child(odd) {
     background: #eee;
 }
+
+#whoIsTyping li {
+    padding: 5px 10px;
+    background-color: lightgrey;
+}
